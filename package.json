@@ -1,0 +1,9 @@
+{
+  "fitbit": {
+    "appType": "clockface",
+    "buildTargets": [
+      "higgs",
+      "meson"
+    ]
+  }
+}
