@@ -6,11 +6,10 @@
   font-size: 140;
   font-family: Colfax-Black;
   text-length: 32;
-  text-anchor: top;
+  text-anchor: middle;
   font-weight:bold;
   x: 50%;
   y: 120;
-  fill: white;
 }
 
 #displayedMinutes {
@@ -21,12 +20,10 @@
   text-anchor: middle;
   x: 50%;
   y: 240;
-  fill: white;
 }
 
 #displayedDate {
   font-size:30;
-  fill: white;
   font-family: Colfax-Black;
   text-length: 10;
   x:12;
@@ -40,6 +37,10 @@
 
 #stepsCount{
 
+}
+
+.blue{
+  fill:#266bb8;
 }
 
 #myLabel {
