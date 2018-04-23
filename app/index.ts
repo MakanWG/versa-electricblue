@@ -1,3 +1,4 @@
+/// <reference path="../typings/versa.d.ts" />
 import clock from "clock";
 import document from "document";
 import { preferences } from "user-settings";
@@ -10,16 +11,18 @@ clock.granularity = "minutes";
 const myLabel = document.getElementById("myLabel");
 
 // Update the <text> element every tick with the current time
-clock.ontick = (evt) => {
+clock.ontick = (evt :any) => {
   let today = evt.date;
-  let hours = today.getHours();
+  let hours: number = today.getHours();
+  let displayedHours: string;
+  let displayedMinutes: string;
   if (preferences.clockDisplay === "12h") {
     // 12h format
-    hours = hours % 12 || 12;
+    displayedHours = `${hours % 12 || 12}`;
   } else {
     // 24h format
-    hours = util.zeroPad(hours);
+    displayedHours = util.zeroPad(hours);
   }
-  let mins = util.zeroPad(today.getMinutes());
-  myLabel.text = `${hours}:${mins}`;
+  displayedMinutes = util.zeroPad(today.getMinutes());
+  myLabel.text = `${displayedHours}:${displayedMinutes}`;
 }
