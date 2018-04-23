@@ -1,3 +1,9 @@
 <svg class="background">
-  <text id="myLabel" />
+  <image x="12" y="12" height="40" width="40" href="design/heart.png" id="heart" load="sync"/>
+  <image x="12" y="50" height="50" width="40" href="design/bolt.png" id="bolt1" load="sync"/>
+  <image x="248" y="248" height="40" width="40" href="design/steps.png" id="steps" load="sync"/>
+  <image x="248" y="200" height="50" width="40" href="design/bolt.png" id="bolt2" load="sync"/>
+  <text id="displayedHours" />
+  <text id="displayedMinutes" />
+  <text id="displayedDate" />
 </svg>

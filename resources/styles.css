@@ -2,15 +2,45 @@
   viewport-fill: black;
 }
 
-#hoursDisplay{
+#displayedHours {
+  font-size: 140;
+  font-family: Colfax-Black;
+  text-length: 32;
+  text-anchor: top;
+  font-weight:bold;
+  x: 50%;
+  y: 120;
+  fill: white;
+}
+
+#displayedMinutes {
+  font-size: 140;
+  font-family: Colfax-Black;
+  text-length: 32;
+  font-weight:bold;
+  text-anchor: middle;
+  x: 50%;
+  y: 240;
+  fill: white;
+}
+
+#displayedDate {
+  font-size:30;
+  fill: white;
+  font-family: Colfax-Black;
+  text-length: 10;
+  x:12;
+  y:288;
+  text-anchor:start;
+}
+
+#heartRate {
 
 }
 
-#minutesDisplay{
+#stepsCount{
 
 }
-
-#
 
 #myLabel {
   font-size: 80;
