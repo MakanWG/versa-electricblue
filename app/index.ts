@@ -1,4 +1,4 @@
-/// <reference path="../typings/versa.d.ts" />
+/// <reference path="../customTypings/versa.d.ts" />
 import clock from "clock";
 import document from "document";
 import { preferences } from "user-settings";
