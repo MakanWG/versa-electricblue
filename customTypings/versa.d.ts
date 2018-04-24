@@ -4,15 +4,32 @@ declare module 'clock' {
 }
 
 declare module 'user-settings' {
-    interface settingsPreferences{
-        clockDisplay:string
+    interface settingsPreferences {
+        clockDisplay: string;
     }
     export let preferences: settingsPreferences;
 
-    interface settingsLocale{
-        language:string
+    interface settingsLocale {
+        language: string;
     }
     export let locale: settingsLocale;
+}
+
+declare module "heart-rate" {
+     class HeartRateSensor {
+        onreading(): void;
+        stop(): void;
+        start(): void;
+        heartRate:number;
+    } 
+}
+
+declare module "display" {
+    interface Display{
+        on: boolean;
+        onchange(): void;
+    }
+    export let display:Display;
 }
 
 declare module 'document' {

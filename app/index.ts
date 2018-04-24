@@ -4,14 +4,34 @@ import document from "document";
 import { preferences } from "user-settings";
 import {locale} from "user-settings";
 import * as util from "../common/utils";
-
-// Update the clock every minute
-clock.granularity = "minutes";
+import { HeartRateSensor } from "heart-rate";
+import { display } from "display";
 
 // Get a handle on the <text> element
 const displayedHours = document.getElementById("displayedHours");
 const displayedMinutes = document.getElementById("displayedMinutes");
 const displayedDate = document.getElementById("displayedDate");
+const displayedHr = document.getElementById("displayedHr");
+
+var hrm = new HeartRateSensor();
+displayedHr.text = "65"; //test
+
+display.onchange=function(){
+  if(display.on == true){
+    hrm.start();
+  }
+  else{
+    hrm.stop();
+  }
+}
+
+hrm.onreading = function() {
+  displayedHr.text = hrm.heartRate;
+}
+
+// Update the clock every minute
+clock.granularity = "minutes";
+
 
 // Update the <text> element every tick with the current time
 clock.ontick = (evt :any) => {

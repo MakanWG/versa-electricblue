@@ -6,4 +6,5 @@
   <text class="blue" id="displayedHours" />
   <text class="blue" id="displayedMinutes" />
   <text class="blue" id="displayedDate" />
+  <textarea class="blue" id="displayedHr" />
 </svg>
