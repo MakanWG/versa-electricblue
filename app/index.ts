@@ -2,7 +2,7 @@
 import clock from "clock";
 import document from "document";
 import { preferences } from "user-settings";
-import {locale} from "user-settings";
+import { locale } from "user-settings";
 import * as util from "../common/utils";
 import { HeartRateSensor } from "heart-rate";
 import { display } from "display";
@@ -16,25 +16,26 @@ const displayedHr = document.getElementById("displayedHr");
 var hrm = new HeartRateSensor();
 displayedHr.text = "65"; //test
 
-display.onchange=function(){
-  if(display.on == true){
+display.onchange = function () {
+  if (display.on == true) {
     hrm.start();
   }
-  else{
+  else {
     hrm.stop();
   }
 }
 
-hrm.onreading = function() {
-  displayedHr.text = hrm.heartRate;
+hrm.onreading = function (event) {
+  displayedHr.text = this.heartRate;
 }
+
 
 // Update the clock every minute
 clock.granularity = "minutes";
 
 
 // Update the <text> element every tick with the current time
-clock.ontick = (evt :any) => {
+clock.ontick = (evt) => {
   let today = evt.date;
   let hours: number = today.getHours();
   if (preferences.clockDisplay === "12h") {
@@ -46,5 +47,5 @@ clock.ontick = (evt :any) => {
   }
   displayedMinutes.text = util.zeroPad(today.getMinutes());
   //displayedDate.text = `${today.getDate()}-${(today.getMonth() + 1)}-${today.getFullYear()}`;
-  displayedDate.text = today.toLocaleString(locale.language, { year:"", month: "short" });
+  displayedDate.text = today.toLocaleString(locale.language, { year: "", month: "short" });
 }
