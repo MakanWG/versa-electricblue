@@ -125,11 +125,21 @@ declare module "gyroscope" {
     }
 }
 
+declare module "haptics" {
+    interface Vibration {
+        start(pattern: VibrationPatternName);
+        stop();
+    }
+    type VibrationPatternName = "bump" | "nudge" | "nudge-max" | "ping" | "confirmation" | "confirmation-max";
+    export let vibration: Vibration;
+}
+
 
 declare module "heart-rate" {
     class HeartRateSensor implements Sensor {
+        readonly readings: HeartRateSensorReading
         readonly activated: boolean;
-        addEventListener(): void;
+        addEventListener(type: "activate" | "reading", listener: (this: HeartRateSensor, event: Event) => any): void;
         onactivate: (this: HeartRateSensor, event: Event) => any;
         onerror(this: HeartRateSensor, event: Event);
         dispatchEvent(evt: Event): boolean;
@@ -139,11 +149,148 @@ declare module "heart-rate" {
         start(): void;
         heartRate: number;
     }
+    interface HeartRateSensorReading extends SensorReading {
+        readonly heartRate: number;
+    }
+}
+
+declare module "messaging" {
+    class CloseEvent {
+        readonly CONNECTION_LOST: number;
+        readonly PEER_INITIATED: number;
+        readonly SOCKET_ERROR: number;
+        readonly code: CloseCode;
+        readonly reason: string;
+        readonly wasClean: boolean;
+    }
+    enum ErrorCode {
+        BUFFER_FULL,
+    }
+    class ErrorEvent {
+        readonly BUFFER_FULL: number;
+        readonly code: ErrorCode;
+        readonly message: string;
+    }
+    enum CloseCode {
+        CONNECTION_LOST,
+        PEER_INITIATED,
+        SOCKET_ERROR,
+    }
+    interface MessageEvent {
+        readonly data: any;
+    }
+    enum ReadyState {
+        CLOSED,
+        OPEN
+    }
+    class MessageSocket implements EventTarget {
+        readonly CLOSED: number;
+        readonly OPEN: number;
+        readonly MAX_MESSAGE_SIZE: number;
+        readonly bufferedAmount: number;
+        onbufferedamountdecrease: ((this: MessageSocket, event: Event) => any);
+        onerror: ((this: MessageSocket, event: CloseEvent) => any);
+        onmessage: ((this: MessageSocket, event: MessageEvent) => any);
+        onopen: ((this: MessageSocket, event: Event) => any);
+        readonly readyState: ReadyState;
+        send(data: any): void;
+        addEventListener(type: string, listener?: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        dispatchEvent(evt: Event): boolean;
+        removeEventListener(type: string, listener?: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+
+    interface EventMap {
+        bufferedamountdecrease: Event;
+        close: CloseEvent;
+        error: ErrorEvent;
+        message: MessageEvent;
+        open: Event;
+    }
+    export let peerSocket: MessageSocket;
+}
+
+declare module "orientation" {
+    class OrientationSensor implements Sensor {
+        readonly readings: OrientationSensorReading;
+        readonly activated: boolean;
+        addEventListener(type: "activate" | "reading", listener: (this: OrientationSensor, event: Event) => any): void;
+        onactivate: (this: OrientationSensor, event: Event) => any;
+        onerror: (this: OrientationSensor, event: Event) => any;
+        onreading: (this: OrientationSensor, event: Event) => any;
+        stop(): void;
+        start(): void;
+        dispatchEvent(evt: Event): boolean;
+        removeEventListener(type: string, listener?: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    interface OrientationSensorReading {
+        readonly quaternion: number[];
+    }
+}
+
+declare module "power" {
+    interface Battery extends EventTarget {
+        chargeLevel: number;
+        charging: boolean;
+        onchange: ((this: Battery, event: Event) => any)
+        timeUntilFull: number;
+        addEventListener(type: "change", listener: (this: Battery, event: Event) => any);
+    }
+    interface Charger extends EventTarget {
+        connected: boolean;
+        onchange: ((this: Charger, event: Event) => any)
+        powerIsGood: boolean;
+        addEventListener(type: "change", listener: (this: Charger, event: Event) => any);
+    }
+    export let battery: Battery;
+    export let charger: Charger;
+}
+
+declare module "system" {
+    interface Memory {
+        readonly js: MemoryUsage;
+        readonly monitor: MemoryPressureMonitor;
+        readonly native: MemoryUsage;
+    }
+    interface MemoryPressureMonitor extends EventTarget {
+        onmemorypressurechange: ((this: MemoryPressureMonitor, event: Event) => any);
+        readonly pressure: "normal"|"high"|"critical";
+        addEventListener(type: "memorypressurechange", listener: (this: MemoryPressureMonitor, event: Event) => any);
+    }
+    interface MemoryUsage{
+        readonly peak:number;
+        readonly total:number;
+        readonly used:number;
+    }
+    export let memory: Memory;
+}
+
+declare module "user-activity"{
+    interface Goals extends Activity{
+        onreachgoal:((this: Goals, event: Event) => any);
+        addEventListener(type: "reachgoal", listener: (this: Goals, event: Event) => any);
+    }
+    interface Today{
+        adjusted:Activity;
+        local:Activity;
+    }
+    interface Activity{
+        activeMinutes:number;
+        calories:number;
+        distance:number;
+        elevationGain:number;
+        steps:number
+    }
+    export let goals:Goals;
+    export let today:Today;
 }
 
 declare module 'document' {
     var _document: any;
     export = _document;
+}
+
+declare interface Permissions {
+    granted(permissionName: "access_activity" | "access_user_profile" | "access_heart_rate" | "access_location" | "access_internet" | "run_background"): boolean;
 }
 
 declare interface Sensor extends EventTarget {
@@ -154,10 +301,6 @@ declare interface Sensor extends EventTarget {
     onreading: (this: Sensor, event: Event) => any;
     stop(): void;
     start(): void;
-}
-
-declare interface Permissions {
-    granted(permissionName: string): boolean;
 }
 
 declare interface SensorReading {
