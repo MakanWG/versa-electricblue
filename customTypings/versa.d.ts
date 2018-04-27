@@ -1,15 +1,3 @@
-declare module 'user-settings' {
-    interface settingsPreferences {
-        clockDisplay: string;
-    }
-    export let preferences: settingsPreferences;
-
-    interface settingsLocale {
-        language: string;
-    }
-    export let locale: settingsLocale;
-}
-
 declare module "accelerometer" {
     class AccelerometerReading implements SensorReading {
         timestamp: number;
@@ -296,6 +284,25 @@ declare module "user-profile" {
         readonly weight:number;
         heartRateZone(heartRate: number):"out-of-range" | "fat-burn" | "cardio" | "peak" | "below-custom" | "custom" | "above-custom";
     }
+}
+
+declare module "user-settings"{
+    interface Preferences{
+        readonly clockDisplay:"12h"|"24h";
+        readonly firstDayOfWeek:0|1;
+    }
+    interface ExerciseSettings{
+        readonly poolLength:number;
+    }
+    interface DeviceSettings{
+        readonly airplaneModeEnabled:boolean;
+        readonly vibrationEnabled:boolean; 
+    }
+    export let preferences:Preferences;
+    export let exercise: ExerciseSettings;
+    export let device: DeviceSettings;
+    export let locale: LocaleSettings;
+    export let units: UnitsSettings;
 }
 
 declare module 'document' {
