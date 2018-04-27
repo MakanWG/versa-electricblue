@@ -253,35 +253,49 @@ declare module "system" {
     }
     interface MemoryPressureMonitor extends EventTarget {
         onmemorypressurechange: ((this: MemoryPressureMonitor, event: Event) => any);
-        readonly pressure: "normal"|"high"|"critical";
+        readonly pressure: "normal" | "high" | "critical";
         addEventListener(type: "memorypressurechange", listener: (this: MemoryPressureMonitor, event: Event) => any);
     }
-    interface MemoryUsage{
-        readonly peak:number;
-        readonly total:number;
-        readonly used:number;
+    interface MemoryUsage {
+        readonly peak: number;
+        readonly total: number;
+        readonly used: number;
     }
     export let memory: Memory;
 }
 
-declare module "user-activity"{
-    interface Goals extends Activity{
-        onreachgoal:((this: Goals, event: Event) => any);
+declare module "user-activity" {
+    interface Goals extends Activity {
+        onreachgoal: ((this: Goals, event: Event) => any);
         addEventListener(type: "reachgoal", listener: (this: Goals, event: Event) => any);
     }
-    interface Today{
-        adjusted:Activity;
-        local:Activity;
+    interface Today {
+        adjusted: Activity;
+        local: Activity;
     }
-    interface Activity{
-        activeMinutes:number;
-        calories:number;
-        distance:number;
-        elevationGain:number;
-        steps:number
+    interface Activity {
+        activeMinutes: number;
+        calories: number;
+        distance: number;
+        elevationGain: number;
+        steps: number
     }
-    export let goals:Goals;
-    export let today:Today;
+    export let goals: Goals;
+    export let today: Today;
+}
+
+declare module "user-profile" {
+    export let user: UserProfile;
+    interface UserProfile {
+        readonly age: number;
+        readonly bmr: number;
+        readonly gender: "male" | "female";
+        readonly height: number;
+        readonly restingHeartRate: number;
+        readonly stride :{ readonly walk: number; readonly run: number; }
+        readonly weight:number;
+        heartRateZone(heartRate: number):"out-of-range" | "fat-burn" | "cardio" | "peak" | "below-custom" | "custom" | "above-custom";
+    }
 }
 
 declare module 'document' {
