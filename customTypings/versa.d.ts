@@ -63,12 +63,8 @@ declare module "clock" {
 }
 
 declare module "device" {
-    interface Device {
-        type: string;
-        modelName: string;
-        modelId: string;
+    interface Device extends BasicDeviceInfo {
         firmwareVersion: string;
-        lastSyncTime: string;
     }
     export let me: Device;
 }
@@ -280,9 +276,9 @@ declare module "user-profile" {
         readonly gender: "male" | "female";
         readonly height: number;
         readonly restingHeartRate: number;
-        readonly stride :{ readonly walk: number; readonly run: number; }
-        readonly weight:number;
-        heartRateZone(heartRate: number):"out-of-range" | "fat-burn" | "cardio" | "peak" | "below-custom" | "custom" | "above-custom";
+        readonly stride: { readonly walk: number; readonly run: number; }
+        readonly weight: number;
+        heartRateZone(heartRate: number): "out-of-range" | "fat-burn" | "cardio" | "peak" | "below-custom" | "custom" | "above-custom";
     }
 }
 
@@ -330,4 +326,54 @@ declare interface SensorReading {
 
 declare interface SensorOptions {
     readonly frequency: number;
+}
+
+declare module "companion" {
+    let me: Companion;
+}
+
+declare module "crypto" {
+    function getRandomValues(values: TypedArray);
+    type TypedArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array;
+}
+
+declare interface BasicDeviceInfo {
+    readonly lastSyncTime: Date;
+    readonly modelId: string;
+    readonly modelName: string;
+    readonly screen: { readonly width: number; readonly height: number; }
+    readonly type: string;
+}
+
+declare interface Host {
+    readonly app: { readonly name: string; readonly version: string; };
+    readonly os: { readonly name: "Android" | "iOS" | "Windows"; readonly version: string; };
+}
+
+declare interface Companion extends EventTarget {
+    readonly applicationId: string;
+    readonly buildId: string;
+    readonly host: Host;
+    readonly permissions: Permissions;
+    readonly launchReasons: LaunchReasons;
+    monitorSignificantLocationChanges:boolean;
+    onunload: ((this: Companion, event: Event) => any);
+    onsignificantlocationchange:((this: Companion, event: SignificantLocationChangeEvent) => any);
+    addEventListener(type: "unload", listener: (this: Companion, event: Event) => any): void;
+    yield(): void;
+}
+
+declare interface LaunchReasons {
+    readonly locationChanged: { position: Position; }
+    readonly peerAppLaunched: boolean;
+    readonly settingsChanged: boolean;
+    readonly wokenUp: boolean;
+}
+
+declare module "local-storage" {
+    let localStorage: Storage;
+}
+
+declare interface SignificantLocationChangeEvent{
+    position:Position;
 }
